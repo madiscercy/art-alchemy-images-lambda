@@ -3,10 +3,11 @@ import json
 def lambda_handler(event, context):
     if 'queryStringParameters' in event:
         query_string_params = event['queryStringParameters']
-        if query_string_params is not None and 'access_token' in query_string_params and 'username' in query_string_params:
 
-            access_token = event['queryStringParameters']['access_token']
-            username = event['queryStringParameters']['username']
+        if 'access_token' in query_string_params and 'username' in query_string_params:
+
+            access_token = query_string_params['access_token']
+            username = query_string_params['username']
             print(access_token)
             print(username)
             return {
