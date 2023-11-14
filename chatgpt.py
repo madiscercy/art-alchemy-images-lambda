@@ -32,7 +32,7 @@ def get_image_description(image, api_key, selected_style):
 
     response = requests.post(
         "https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
-
+    print(response.json())
     content = response.json().get('choices')[0].get('message').get('content')
     prompt = json.loads(content).get('prompt')
     return prompt

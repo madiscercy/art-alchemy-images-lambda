@@ -1,17 +1,6 @@
-import base64
-from PIL import Image
-from io import BytesIO
 import boto3
-
-# Sample base64 image string (replace with your string)
-
-# Function to decode and load the image
-
-
-def decode_base64_image(base64_string):
-    image_data = base64.b64decode(base64_string)
-    image = Image.open(BytesIO(image_data))
-    return image
+from botocore.exceptions import ClientError
+import json
 
 
 def get_secret():
@@ -30,12 +19,5 @@ def get_secret():
         )
     except ClientError as e:
         raise e
-
-    print(get_secret_value_response)
-    secret = get_secret_value_response['SecretString']
-    return secret
-
-
-# # Decode the image and show it
-# decoded_image = decode_base64_image(base64_image_string)
-# decoded_image.show()
+    secret_dict = json.loads(get_secret_value_response['SecretString'])
+    return secret_dict['openAIKey']
