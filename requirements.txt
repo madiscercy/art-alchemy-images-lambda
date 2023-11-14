@@ -1,5 +1,4 @@
-pydantic
-pydantic-core
+fastapi
 requests
 boto3
 openai
