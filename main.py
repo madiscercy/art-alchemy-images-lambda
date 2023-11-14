@@ -1,7 +1,7 @@
 import json
 from chatgpt import get_image_description
 from dalle import generate_image
-from utils import decode_base64_image, get_secret
+from utils import get_secret
 
 
 def lambda_handler(event, context):
@@ -9,9 +9,6 @@ def lambda_handler(event, context):
     base64_image = event['imageData']
     selected_style = event['style']
     api_key = get_secret()
-
-    # Decode the base64 image
-    image = decode_base64_image(base64_image)
 
     # Get image description using ChatGPT
     prompt = get_image_description(base64_image, api_key, selected_style)
