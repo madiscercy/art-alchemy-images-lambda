@@ -27,7 +27,7 @@ def get_image_description(image, api_key, selected_style):
                 ]
             }
         ],
-        "max_tokens": 300
+        "max_tokens": 800
     }
 
     response = requests.post(
