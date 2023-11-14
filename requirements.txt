@@ -1,4 +1,5 @@
 pydantic
+pydantic-core
 requests
 boto3
 openai
