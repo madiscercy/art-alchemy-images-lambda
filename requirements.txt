@@ -1,3 +1,5 @@
+pydantic
 requests
 boto3
 openai
+json

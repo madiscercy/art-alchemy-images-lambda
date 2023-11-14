@@ -19,5 +19,8 @@ def lambda_handler(event, context):
     # Return the new image as a response (or a URL to the image if stored in S3)
     return {
         'statusCode': 200,
+        'headers': {
+            'Access-Control-Allow-Origin': '*'  # or your specific origin
+        },
         'body': json.dumps({'newImage': new_image})
     }
