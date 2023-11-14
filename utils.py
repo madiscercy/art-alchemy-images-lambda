@@ -1,5 +1,6 @@
 import boto3
 from botocore.exceptions import ClientError
+import json
 
 
 def get_secret():
@@ -18,12 +19,5 @@ def get_secret():
         )
     except ClientError as e:
         raise e
-
-    print(get_secret_value_response)
-    secret = get_secret_value_response['SecretString']
-    return secret
-
-
-# # Decode the image and show it
-# decoded_image = decode_base64_image(base64_image_string)
-# decoded_image.show()
+    secret_dict = json.loads(get_secret_value_response['SecretString'])
+    return secret_dict['openAIKey']
