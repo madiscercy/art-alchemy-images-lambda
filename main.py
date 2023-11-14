@@ -1,38 +1,26 @@
 import json
-from deviant_art_service import DeviantArtService
+from chatgpt import get_image_description
+from dalle import generate_image
+from utils import decode_base64_image, get_secret
 
 
 def lambda_handler(event, context):
-    query_string_params = event['queryStringParameters']
+    # Extracting image data and style from the event
+    base64_image = event['imageData']
+    selected_style = event['style']
+    api_key = get_secret()
 
-    if query_string_params is not None and 'access_token' in query_string_params and 'username' in query_string_params:
+    # Decode the base64 image
+    image = decode_base64_image(base64_image)
 
-        access_token = query_string_params['access_token']
-        username = query_string_params['username']
+    # Get image description using ChatGPT
+    prompt = get_image_description(base64_image, api_key, selected_style)
 
-        deviant_art_service = DeviantArtService()
-        images = deviant_art_service.get_images(access_token, username)
-        if images is not None and len(images) > 0:
-            response = {
-                'statusCode': 200,
-                'body': json.dumps(images)
-            }
-            print(response)
-            return response
+    # Generate a new image using DALL-E with the description and style
+    new_image = generate_image(prompt, api_key)
 
-        return {
-            'statusCode': 400,
-            'body': json.dumps('No images found.')
-        }
-    else:
-        response = {
-            'statusCode': 400,
-            'body': json.dumps('Missing access_token or username')
-        }
-        print(response)
-        return response
-
-
-event = {'queryStringParameters': {
-    'access_token': '4f92c6a79c79e100d720f5fd692c6f10d20724a60c022daf7f', 'username': 'wasabiibunni'}}
-lambda_handler(event, None)
+    # Return the new image as a response (or a URL to the image if stored in S3)
+    return {
+        'statusCode': 200,
+        'body': json.dumps({'newImage': new_image})
+    }
